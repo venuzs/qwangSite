@@ -3,7 +3,12 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText":"首页",
+				// #ifdef MP-ALIPAY
+				"navigationBarTitleText": "",
+				// #endif
+				// #ifndef MP-ALIPAY
+				"navigationBarTitleText": "首页",
+				// #endif
 				"app-plus": {
 					"titleNView": false //禁用原生导航栏
 				}
@@ -12,7 +17,12 @@
 		{
 			"path": "pages/theBest/thebest",
 			"style": {
-				"navigationBarTitleText":"最佳实践",
+				// #ifdef MP-ALIPAY
+				"navigationBarTitleText": "",
+				// #endif
+				// #ifndef MP-ALIPAY
+				"navigationBarTitleText": "最佳实践",
+				// #endif
 				"app-plus": {
 					"titleNView": false
 				}
@@ -21,34 +31,12 @@
 		{
 			"path": "pages/aboutUs/aboutus",
 			"style": {
-				"navigationBarTitleText":"关于我们",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
-		{
-			"path": "pages/business/community",
-			"style": {
-				"navigationBarTitleText":"社群运营",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
-		{
-			"path": "pages/business/member",
-			"style": {
-				"navigationBarTitleText":"会员运营",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
-		{
-			"path": "pages/business/activity",
-			"style": {
-				"navigationBarTitleText":"营销活动",
+				// #ifdef MP-ALIPAY
+				"navigationBarTitleText": "",
+				// #endif
+				// #ifndef MP-ALIPAY
+				"navigationBarTitleText": "关于我们",
+				// #endif
 				"app-plus": {
 					"titleNView": false
 				}
@@ -57,7 +45,12 @@
 		{
 			"path": "pages/cases/cases",
 			"style": {
-				"navigationBarTitleText":"解决方案",
+				// #ifdef MP-ALIPAY
+				"navigationBarTitleText": "",
+				// #endif
+				// #ifndef MP-ALIPAY
+				"navigationBarTitleText": "解决方案",
+				// #endif
 				"app-plus": {
 					"titleNView": false
 				}
@@ -66,7 +59,12 @@
 		{
 			"path": "pages/icommx/icommx",
 			"style": {
-				"navigationBarTitleText":"iCommX",
+				// #ifdef MP-ALIPAY
+				"navigationBarTitleText": "",
+				// #endif
+				// #ifndef MP-ALIPAY
+				"navigationBarTitleText": "iCommX",
+				// #endif
 				"app-plus": {
 					"titleNView": false
 				}
@@ -74,10 +72,15 @@
 		}
 	],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
+		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "全网数商",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		// #ifdef MP-ALIPAY
+		"transparentTitle": "always",
+		"titlePenetrate": "YES",
+		// #endif
+			"navigationStyle": "custom"
 	}
 
 }

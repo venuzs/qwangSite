@@ -1,7 +1,7 @@
 <template>
     <view class="home">
         <topnav :holder="true"></topnav>
-        <video id="myVideo" :src="result.videoUrl" :poster="result.videoPosr"></video>
+        <video id="myVideo" object-fit="cover" poster-size="cover" :src="result.videoUrl" :poster="result.videoPosr"></video>
         <view>
             <view class="content">
                 <view class="tcl-cont box">
@@ -119,18 +119,18 @@
 </template>
 <script>
 // 获取最佳实践数据
-import result from '@/viewData/aboutUs';
+// import result from '@/viewData/aboutUs';
 export default {
     data() {
         return {
-            result: {},
+            result: require('@/viewData/aboutUs'),
             curt: 0,
             showLeft: false,
             showRight: true,
         }
     },
     onLoad() {
-        this.result = result
+        // this.result = result
     },
     methods: {
         preImgs1 (pic) {
@@ -223,7 +223,7 @@ export default {
     margin-bottom: 40rpx;
 }
 video {
-    width: 100%;
+    width: 100% !important;
 }
 .hop-line {
     display: flex;
@@ -308,7 +308,7 @@ margin-top: 30rpx;
     border:1px solid #DFDFDF;
 }
 .brand /deep/ .swiper{
-	height: 408rpx;
+	height: 408rpx !important;
 }
 .swiper /deep/.uni-swiper-dot{
 	background: rgba(0,0,0,.5);
@@ -330,7 +330,7 @@ margin-top: 30rpx;
     height: 100%;
 }
 .progress-warp /deep/ .swiper {
-    height: 776rpx;
+    height: 776rpx !important;
 }
 .progress-warp .swiper-warp {
     position: absolute;
@@ -350,6 +350,7 @@ margin-top: 30rpx;
     color: #fff;
     padding-top: 68rpx;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 .prog-Y {
     font-size: 52rpx;
@@ -366,8 +367,8 @@ margin-top: 30rpx;
     position: absolute;
     top: 34rpx;
     left: 34rpx;
-    bottom: 34rpx;
-    right: 34rpx;
+    width: 157rpx;
+    height: 157rpx;
     border: 1px solid #fff;
     transform: rotate(45deg);
 }

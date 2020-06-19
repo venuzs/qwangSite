@@ -1,18 +1,23 @@
 <template>
     <view class="qw-visible-mobile" :class="srcollchange?'noline':''">
         <view :class="holder?'qw-top-seizeaseat':''"></view>
-        <view class="qw-header-mobile">
+        <view class="qw-header-mobile" :style="{paddingTop:  statusBarHeight+ 'px'}">
             <view class="qw-header-bg" :class="srcollchange?'black':''"></view>
-            <view url="javascript:;" class="qw-meun" @click="showSlide"></view>
-            <navigator url="/" class="qw-logo"></navigator>
-            <view class="qw-dropdown" id="qw-navbar-collapse" v-if="tabSlide">
+			<!-- #ifdef MP -->
+            <view class="qw-meun" :class="lowernav?'lower-nav':''" :style="{top: statusBarHeight+ 'px'}" @click="showSlide"></view>
+			<!-- #endif -->
+			<!-- #ifndef MP -->
+			<view class="qw-meun" @click="showSlide"></view>
+			<!-- #endif -->
+            <navigator open-type="reLaunch" url="/pages/index/index" class="qw-logo"></navigator>
+            <view class="qw-dropdown" id="qw-navbar-collapse" v-show="tabSlide" :style="{marginTop: statusBarHeight+ 'px'}">
                 <view class="ol">
-                    <view class="qw-itme" :class="item.active?'active':''" v-for="(item,index) in slideCategort" :key="index" @click="slideItem(index)">
-                        <view class="h3">{{item.title}}</view>
-                        <view class="qw-h5-nav" v-show="item.active">
+                    <view class="qw-itme" :class="item.active?'active':''" v-for="(item,index) in slideCategort" :key="index" >
+                        <view class="h3" @click="slideItem(index)">{{item.title}}</view>
+                        <view class="qw-h5-nav" v-bind:style="{maxHeight: item.activeHeight}">
                             <view class="ul">
                                 <view v-for="(second,idx) in item.secondCategort" :key="idx">
-                                    <navigator class="a" url="">
+                                    <navigator class="a" :url="second.url">
                                         <view class="h4">{{second.name}}</view>
                                         <view class="titl-p">{{second.detail}}</view>
                                     </navigator>
@@ -25,12 +30,14 @@
                         <view class="h3"><navigator class="a" url="/pages/aboutUs/aboutus">关于我们</navigator></view>
                     </view>
                 </view>
-                <navigator url="" class="qw-programme butn butn-custom">免费获取方案</navigator>
+                <view @click="showModel" class="qw-programme butn butn-custom">免费获取方案</view>
             </view>
         </view>
+		<popu :modalstate="modalstate" v-on:emitState="emitState"></popu>
     </view>
 </template>
 <script>
+import popu from "@/components/popup"
     export default {
 		props: {
 			holder: {
@@ -45,11 +52,21 @@
 		data() {
 			return {
 				tabSlide:false,
-				showItem:false,
+				modalstate: false,
+				statusBarHeight: 0,
+				currentname: true,
+				// #ifdef MP-ALIPAY
+				lowernav: true,
+				// #endif
+				// #ifndef MP-ALIPAY
+				lowernav: false,
+				// #endif
 				slideCategort:[
 					{ 
                         title:'企业大中台',
-                        active:false,
+						activeHeight:0,
+						contentHeight: 0,
+						active:false,
 						secondCategort:[
 							{
 								name:'业务中台',
@@ -70,7 +87,9 @@
 					},
 					{ 
                         title:'全渠道销售',
-                        active:false,
+                        activeHeight:0,
+						contentHeight: 0,
+						active:false,
 						secondCategort:[
 							{
 								name:'品牌零售系统',
@@ -101,111 +120,176 @@
 					},
 					{ 
                         title:'智能营销',
-                        active:false,
+                        activeHeight:0,
+						contentHeight: 0,
+						active:false,
 						secondCategort:[
 							{
 								name:'社群运营',
 								detail:'iCommX SCRM',
-								url:"/pages/business/community"
+								url:"/pages/icommx/icommx?type=scrm"
 							},
 							{
 								name:'会员运营',
 								detail:'iCommX MemOps',
-								url:"/pages/business/member"
+								url:"/pages/icommx/icommx?type=mem"
 							},
 							{
 								name:'营销工具',
 								detail:'iCommX Marketing',
-								url:"/pages/business/activity"
+								url:"/pages/icommx/icommx?type=market"
 							},
+							{
+								name:'分销系统',
+								detail:'iCommX MDS',
+								url:""
+							}
 						]
 					},
 					{ 
                         title:'解决方案',
-                        active:false,
+                        activeHeight:0,
+						contentHeight: 0,
+						active:false,
 						secondCategort:[
 							{
 								name:'制造',
-								detail:''
+								detail:'',
+								url:"/pages/cases/cases?type=mfg"
 							},
 							{
 								name:'汽车',
-								detail:''
+								detail:'',
+								url:"/pages/cases/cases?type=cart"
 							},
 							{
 								name:'流通',
-								detail:''
+								detail:'',
+								url:"/pages/cases/cases?type=flw"
 							},
 							{
 								name:'快消',
-								detail:''
+								detail:'',
+								url:"/pages/cases/cases?type=cons"
 							},
 							{
 								name:'餐饮',
-								detail:''
+								detail:'',
+								url:"/pages/cases/cases?type=food"
 							},
 							{
 								name:'保险',
-								detail:''
+								detail:'',
+								url:"/pages/cases/cases?type=safe"
 							},
 							{
 								name:'广电',
-								detail:''
-							},
+								detail:'',
+								url:"/pages/cases/cases?type=tele"
+							}
 						]
 					},
 					{ 
                         title:'最佳实践',
-                        active:false,
+                        activeHeight:0,
+						contentHeight: 0,
+						active:false,
 						secondCategort:[
 							{
 								name:'TCL集团',
 								detail:'',
-								url:"pages/theBest/thebest"
+								url:"/pages/theBest/thebest"
 							},
 							{
 								name:'九牧厨卫',
 								detail:'',
-								url:"pages/theBest/thebest?type=jomoo"
+								url:"/pages/theBest/thebest?type=jomoo"
 							},
 							{
 								name:'宏伟天马',
 								detail:'',
-								url:"pages/theBest/thebest?type=tima"
+								url:"/pages/theBest/thebest?type=tima"
 							},
 							{
 								name:'长城汽车',
 								detail:'',
-								url:"pages/theBest/thebest?type=haval"
+								url:"/pages/theBest/thebest?type=haval"
 							},
 							{
 								name:'创维安时达',
 								detail:'',
-								url:"pages/theBest/thebest?type=anyserves"
+								url:"/pages/theBest/thebest?type=anyserves"
 							},
 							{
 								name:'海底捞',
 								detail:'',
-								url:"pages/theBest/thebest?type=haidilao"
+								url:"/pages/theBest/thebest?type=haidilao"
 							}
 						]
 					},
 				]
 			}
 		},
-		onLoad() {
-			this.result = result;
+		mounted() {
+			let _this = this;
+			// #ifdef MP
+			uni.getSystemInfo({
+				success: function (res) {
+					_this.statusBarHeight = res.statusBarHeight + 4;
+					if(res.platform.toLowerCase() == 'android'){
+						_this.statusBarHeight += 4;
+					}
+					
+				}
+			})
+			// #endif
 		},
 		methods: {
+			showModel() {
+				this.modalstate = true
+			},
+			emitState() {
+				this.modalstate = false
+			},
 			showSlide(){
 				this.tabSlide = !this.tabSlide
 			},
 			slideItem(index){
-				this.slideCategort[index].active = !this.slideCategort[index].active
+				let _this = this;
+				if(this.currentname) {
+					this.getRect('.ul',true).then(function (res) {
+						res.forEach((ele,i) => {
+							_this.slideCategort[i].contentHeight = ele.height + 'px';
+						});
+						_this.slideCategort[index].activeHeight = _this.slideCategort[index].contentHeight
+					});
+				}
+				
+				this.currentname = false
+				this.slideCategort[index].active = !this.slideCategort[index].active;
+				this.slideCategort[index].activeHeight = this.slideCategort[index].active? this.slideCategort[index].contentHeight : 0;
+				// #ifdef MP-ALIPAY
+					// this.slideCategort[index].activeHeight = this.slideCategort[index].active? 'none' : 0
+				// #endif
+			},
+			getRect(selector, all) {
+				var _this2 = this;
+
+				return new Promise(function (resolve) {
+					uni.createSelectorQuery().in(_this2)[all ? 'selectAll' : 'select'](selector).boundingClientRect(function (rect) {
+					if (all && Array.isArray(rect) && rect.length) {
+						resolve(rect);
+					}
+
+					if (!all && rect) {
+						resolve(rect);
+					}
+					}).exec();
+				});
 			}
 		},
-		onPageScroll(e) {
-			console.log(e)
+		components: {
+			popu
 		}
 	};
 </script>
@@ -213,10 +297,13 @@
 .qw-header-mobile{
 	width: 100%;
 	height: 120rpx;
+	/* #ifdef MP */
+	height: 90rpx;
+	/* #endif */
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index: 999;
+	z-index: 79;
 	border-bottom: 1px solid #666;
  }
  .noline {
@@ -224,6 +311,9 @@
  }
  .qw-top-seizeaseat{
 	height: 120rpx;
+	/* #ifdef MP */
+	height: 90rpx;
+	/* #endif */
  }
 .qw-header-bg {
 	position: absolute;
@@ -240,9 +330,11 @@
 .qw-meun, .qw-header-mobile .qw-meun{
 	width: 15%;
 	height: 120rpx;
+	/* #ifdef MP */
+	height: 90rpx;
+	/* #endif */
 	position: absolute;
 	top: 0;
-	background-position: 30rpx;
 	background-repeat: no-repeat;
 	-webkit-background-size: 40rpx 40rpx;
 	background-size: 40rpx 40rpx;
@@ -254,23 +346,47 @@
 	background: url('../static/index/menu.png') center no-repeat;
 	-webkit-background-size: 50rpx 36rpx;
 	background-size: 50rpx 36rpx;
+	/* #ifdef MP */
+	right: 194rpx;
+	background-position-y: 8px;
+	/* #endif */
+}
+.qw-header-mobile .qw-meun.lower-nav {
+	width: 112rpx;
+	height: 60rpx;
+	border: 1px solid #e6e6ee;
+	border-right: 0;
+	border-radius: 30rpx 0 0 30rpx;
+	background-position-y: center;
+	background-color: rgba(255,255,255,0.8);
+	top: calc(100vh - 240rpx) !important;
+	right: 0 !important;
 }
 .qw-header-mobile .qw-logo{
 	position: relative;
 	display: block;
-	width: 70%;
+	width: 60%;
 	height: 120rpx;
 	background: url('../static/index/qw-logo.png') 38rpx center no-repeat;
 	margin: 0;
 	-webkit-background-size: 392rpx auto;
 	background-size: 392rpx auto;
 	z-index: 3;
+	/* #ifdef MP */
+	height: 90rpx;
+	background-position-y: top;
+	margin-top: -4px;
+	/* #endif */
 }
 .qw-dropdown{
 	background-color: #fff;
 	position: fixed;
 	top: 120rpx;
 	height: calc(100vh - 120rpx);
+	/* #ifdef MP */
+	top: 90rpx;
+	height: calc(100vh - 90rpx);
+	/* #endif */
   overflow-y: auto;
 	bottom: 0;
 	left: 0;
@@ -281,6 +397,7 @@
 	width: 100%;
 	padding: 0 30rpx;
 	padding-top: 48rpx;
+	box-sizing: border-box
 }
 .qw-dropdown .ol>view .h3{
 	line-height: 100rpx;
@@ -290,7 +407,7 @@
 	font-size: 32rpx;
 }
 .qw-dropdown .ol>view.qw-itme .h3{
-	background: url('../static/index/qw-1.png') center right no-repeat;
+	background: url('http://www.qwang.com.cn/img/qw-1.png') center right no-repeat;
 	background-size:20rpx auto;
 }
 .qw-dropdown .ol>view .h3 .a{
@@ -298,12 +415,15 @@
 }
 
 .qw-dropdown .ol>view.qw-itme.active .h3{
-	background: url('../static/index/x.png') center right no-repeat;
+	background: url('http://www.qwang.com.cn/img/x.png') center right no-repeat;
 	background-size:auto 20rpx;
 }
 
 .qw-h5-nav{
 	padding: 0 30rpx;
+	overflow: hidden;
+	will-change:max-height;
+	transition:max-height .3s ease-in-out;
 }
 .qw-h5-imglogo{
 	overflow: hidden;
